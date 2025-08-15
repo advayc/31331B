@@ -1,9 +1,8 @@
 #include "chassis.h"
 #include "drive.h"
-#include "sensors.h"
 
 namespace Chassis {
-    // PID and chassis setup for 36:60 drivetrain, 360 RPM
+    // PID and chassis setup for 36:60 drivetrain, 360 RPM, motor encoder odometry
     lemlib::Drivetrain drivetrain(&Drive::leftMotors,
                                   &Drive::rightMotors,
                                   10.5, // track width in inches (adjust based on your robot)
@@ -35,12 +34,12 @@ namespace Chassis {
                                                  0    // max acceleration (slew)
     );
     
-    // Basic odometry using IMU only (no tracking wheels yet)
+    // Basic odometry using motor encoders only (no external sensors)
     lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1
                                nullptr, // vertical tracking wheel 2  
                                nullptr, // horizontal tracking wheel 1
                                nullptr, // horizontal tracking wheel 2
-                               &Sensors::imu // inertial sensor
+                               nullptr  // no inertial sensor - using motor encoders only
     );
     
     // Drive curves for smooth control

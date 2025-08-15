@@ -1,16 +1,11 @@
 #pragma once
 
-#include "pros/imu.hpp"
-
 namespace Sensors {
-    // Sensor instances
-    extern pros::Imu imu;
-    
-    // Sensor functions
+    // Sensor functions (no external sensors - using motor encoders only)
     void initialize();
     void calibrateAll();
     
-    // IMU functions
+    // Placeholder functions for compatibility
     bool isImuCalibrated();
     double getHeading();
     double getRotation();

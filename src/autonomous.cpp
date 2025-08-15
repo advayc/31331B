@@ -1,6 +1,5 @@
 #include "autonomous.h"
 #include "chassis.h"
-#include "sensors.h"
 #include <cmath>
 
 namespace Autonomous {
@@ -96,7 +95,8 @@ namespace Autonomous {
     void resetPosition() {
         Chassis::setPose(0, 0, 0);
         startingPose = {0, 0, 0};
-        Sensors::resetHeading();
+        // Reset motor encoders through Drive module
+        // No external sensors to reset
     }
     
     void returnToStart() {

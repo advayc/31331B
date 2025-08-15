@@ -1,6 +1,5 @@
 #include "display.h"
 #include "chassis.h"
-#include "sensors.h"
 #include "pros/llemu.hpp"
 
 namespace Display {
@@ -11,18 +10,12 @@ namespace Display {
     }
     
     void updateRobotInfo() {
-        // Display chassis and sensor info
+        // Display chassis info using motor encoder odometry
         lemlib::Pose pose = Chassis::getPose();
         pros::lcd::print(0, "X: %.2f Y: %.2f", pose.x, pose.y);
         pros::lcd::print(1, "Heading: %.1f deg", pose.theta);
-        pros::lcd::print(2, "IMU: %.1f deg", Sensors::getHeading());
-        
-        // Show if IMU is calibrated
-        if (Sensors::isImuCalibrated()) {
-            pros::lcd::print(3, "Status: Ready");
-        } else {
-            pros::lcd::print(3, "Status: Calibrating...");
-        }
+        pros::lcd::print(2, "Encoder Odometry");
+        pros::lcd::print(3, "Status: Ready");
     }
     
     void printLine(int line, const char* format, ...) {
@@ -63,8 +56,8 @@ namespace Display {
     }
     
     void showSensorValues() {
-        pros::lcd::print(5, "IMU Calibrated: %s", Sensors::isImuCalibrated() ? "Yes" : "No");
-        pros::lcd::print(6, "Rotation: %.1f", Sensors::getRotation());
+        pros::lcd::print(5, "Motor Encoders: Active");
+        pros::lcd::print(6, "External Sensors: None");
     }
     
     void showPoseInfo() {

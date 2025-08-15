@@ -1,49 +1,45 @@
 #include "sensors.h"
 
 namespace Sensors {
-    // Sensor instances - enabled for PID/odometry
-    pros::Imu imu(10);  // IMU on port 10
-    
-    // No tracking wheels yet, but IMU can provide heading for basic odometry
+    // No external sensors - using motor encoders only
     
     void initialize() {
-        calibrateAll();
+        // No sensors to initialize
     }
     
     void calibrateAll() {
-        imu.reset();
-        while (imu.is_calibrating()) {
-            pros::delay(10);
-        }
+        // No sensors to calibrate
     }
     
     bool isImuCalibrated() {
-        return !imu.is_calibrating();
+        return true; // Always ready since no IMU
     }
     
     double getHeading() {
-        return imu.get_heading();
+        // No IMU - heading will be calculated from motor encoders by LemLib
+        return 0.0;
     }
     
     double getRotation() {
-        return imu.get_rotation();
+        // No IMU - rotation calculated from motor encoders
+        return 0.0;
     }
     
     void resetHeading() {
-        imu.set_heading(0);
+        // No IMU to reset - motor encoders handle this
     }
     
     double getHorizontalPosition() {
-        // No tracking wheels yet
+        // No tracking wheels
         return 0.0;
     }
     
     double getVerticalPosition() {
-        // No tracking wheels yet
+        // No tracking wheels  
         return 0.0;
     }
     
     void resetEncoders() {
-        // No tracking wheels to reset yet
+        // Motor encoders are reset in Drive module
     }
 }

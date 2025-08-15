@@ -51,9 +51,8 @@ void opcontrol() {
         
         // Button controls
         if (Controller::getDigitalNewPress(pros::E_CONTROLLER_DIGITAL_A)) {
-            // Reset sensors and position when A is pressed
+            // Reset motor encoders and position when A is pressed
             Drive::resetEncoders();
-            Sensors::resetHeading();
             Chassis::setPose(0, 0, 0);
         }
         
@@ -62,11 +61,6 @@ void opcontrol() {
             static bool coastMode = true;
             coastMode = !coastMode;
             Drive::setBrakeMode(coastMode ? pros::MotorBrake::coast : pros::MotorBrake::brake);
-        }
-        
-        if (Controller::getDigitalNewPress(pros::E_CONTROLLER_DIGITAL_X)) {
-            // Test autonomous routine when X is pressed
-            Autonomous::testRoutine();
         }
         
         pros::delay(10);

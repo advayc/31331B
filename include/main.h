@@ -41,6 +41,14 @@
  */
 //#include "okapi/api.hpp"
 
+// Project modules
+#include "drive.h"
+#include "controller.h"
+#include "sensors.h"
+#include "chassis.h"
+#include "display.h"
+#include "autonomous.h"
+
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
  * Motor, you can use the namespace with the following commented out line.

@@ -1,4 +1,5 @@
 #include "drive.h"
+#include <cstdlib>  // for abs()
 
 namespace Drive {
     // Motor groups - matching Python VEX configuration
@@ -15,6 +16,8 @@ namespace Drive {
     
     void leftStickControl(int forward, int turn) {
         // Left stick only control - full speed capability
+        // Apply deadband to eliminate drift
+        
         int left_speed = forward + turn;
         int right_speed = forward - turn;
         
@@ -52,5 +55,34 @@ namespace Drive {
     void resetEncoders() {
         leftMotors.tare_position();
         rightMotors.tare_position();
+    }
+    
+    // Timed movement functions for autonomous
+    void moveForward(int speed, int time_ms) {
+        leftMotors.move(-speed);   // Reverse for forward movement
+        rightMotors.move(-speed);  // Reverse for forward movement
+        pros::delay(time_ms);
+        stop();
+    }
+    
+    void moveBackward(int speed, int time_ms) {
+        leftMotors.move(speed);    // Normal for backward movement
+        rightMotors.move(speed);   // Normal for backward movement
+        pros::delay(time_ms);
+        stop();
+    }
+    
+    void turnRight(int speed, int time_ms) {
+        leftMotors.move(-speed);   // Left motors forward
+        rightMotors.move(speed);   // Right motors backward
+        pros::delay(time_ms);
+        stop();
+    }
+    
+    void turnLeft(int speed, int time_ms) {
+        leftMotors.move(speed);    // Left motors backward
+        rightMotors.move(-speed);  // Right motors forward
+        pros::delay(time_ms);
+        stop();
     }
 }

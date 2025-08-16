@@ -63,6 +63,11 @@ void opcontrol() {
             Drive::setBrakeMode(coastMode ? pros::MotorBrake::coast : pros::MotorBrake::brake);
         }
         
+        if (Controller::getDigitalNewPress(pros::E_CONTROLLER_DIGITAL_X)) {
+            // Test autonomous routine when X is pressed
+            Autonomous::testRoutine();
+        }
+        
         pros::delay(10);
     }
 }

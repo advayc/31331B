@@ -68,6 +68,16 @@ void opcontrol() {
             Autonomous::testRoutine();
         }
         
+        if (Controller::getDigitalNewPress(pros::E_CONTROLLER_DIGITAL_Y)) {
+            // Tune distance when Y is pressed
+            Autonomous::tuneDistance();
+        }
+        
+        if (Controller::getDigitalNewPress(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+            // Tune turning when Right arrow is pressed
+            Autonomous::tuneTurning();
+        }
+        
         pros::delay(10);
     }
 }

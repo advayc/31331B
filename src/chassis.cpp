@@ -1,35 +1,36 @@
 #include "chassis.h"
 #include "drive.h"
+#include "lemlib/chassis/trackingWheel.hpp"
 
 namespace Chassis {
     // PID and chassis setup for 36:60 drivetrain, 360 RPM, motor encoder odometry
     lemlib::Drivetrain drivetrain(&Drive::leftMotors,
                                   &Drive::rightMotors,
                                   10.5, // track width in inches (adjust based on your robot)
-                                  lemlib::Omniwheel::NEW_4, // 4" wheels
+                                  lemlib::Omniwheel::NEW_325, // 3.25" wheels
                                   360, // drivetrain rpm (matches your specs)
-                                  8 // horizontal drift with traction wheels
+                                  2 // horizontal drift (lower for better accuracy with encoders)
     );
 
-    // Tuned PID controllers for your drivetrain
-    lemlib::ControllerSettings linearController(10, // kP
-                                               0,  // kI  
-                                               3,  // kD
-                                               3,  // anti windup
-                                               1,  // small error range (inches)
+    // Tuned PID controllers for precise motor encoder movement
+    lemlib::ControllerSettings linearController(8,  // kP - proportional gain
+                                               0,   // kI - integral gain
+                                               25,  // kD - derivative gain
+                                               3,   // anti windup
+                                               1,   // small error range (inches)
                                                100, // small error timeout (ms)
                                                3,   // large error range (inches)
                                                500, // large error timeout (ms)
                                                20   // max acceleration (slew)
     );
     
-    lemlib::ControllerSettings angularController(2,  // kP
-                                                 0,  // kI
-                                                 10, // kD
-                                                 3,  // anti windup
-                                                 1,  // small error range (degrees)
+    lemlib::ControllerSettings angularController(4,  // kP - proportional gain
+                                                 0,   // kI - integral gain
+                                                 30,  // kD - derivative gain
+                                                 3,   // anti windup
+                                                 2,   // small error range (degrees)
                                                  100, // small error timeout (ms)
-                                                 3,   // large error range (degrees)
+                                                 5,   // large error range (degrees)
                                                  500, // large error timeout (ms)
                                                  0    // max acceleration (slew)
     );

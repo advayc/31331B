@@ -4,112 +4,224 @@
 #include <cmath>
 
 namespace Autonomous {
-    // Starting position tracking
+    // Starting position management
     lemlib::Pose startingPose = {0, 0, 0};
     
     void initialize() {
-        // Automatically reset position and heading
-        resetPosition();
+        // Set starting position to origin
+        setStartingPose(0, 0, 0);
     }
     
     void basicRoutine() {
-        // Automatically reset position at start
-        resetPosition();
+        // Reset to starting position
+        resetToStartingPose();
         
-        // Simple timed autonomous routine
-        // Move forward at 50% speed for 3 seconds
-        Drive::moveForward(64, 3000);  // 50% of 127 = ~64
+        // PID-based autonomous routine using precise positioning
+        // Move to position (36, 0) - 36 inches forward
+        driveToPoint(36, 0);
+        waitUntilDone();
         
-        // Small pause
-        pros::delay(500);
+        // Turn to face 90 degrees (right)
+        turnToHeading(90);
+        waitUntilDone();
         
-        // Turn right 90 degrees (adjust time as needed for your robot)
-        Drive::turnRight(50, 800);  // Adjust time for 90 degree turn
+        // Move forward 12 inches in the new direction
+        driveDistance(12);
+        waitUntilDone();
         
-        // Small pause
-        pros::delay(500);
+        // Move back 12 inches
+        driveDistance(-12);
+        waitUntilDone();
         
-        // Move forward a bit (1 second at 50% speed)
-        Drive::moveForward(64, 1000);
-        
-        // Small pause
-        pros::delay(500);
-        
-        // Move back to roughly starting area
-        Drive::moveBackward(64, 1000);
-        
-        // Turn back left to original heading
-        Drive::turnLeft(50, 800);
-        
-        // Move back to start
-        Drive::moveBackward(64, 3000);
+        // Return to starting pose (position and heading)
+        resetToStartingPose();
+        waitUntilDone();
     }
     
     void skillsRoutine() {
-        // Extended routine for skills challenge
-        resetPosition();
+        // Square pattern using precise PID positioning
+        resetToStartingPose();
         
-        // Simple square pattern with timed movements
-        for (int i = 0; i < 4; i++) {
-            Drive::moveForward(80, 2000);  // 2 seconds forward
-            pros::delay(200);
-            Drive::turnRight(60, 600);     // Turn right
-            pros::delay(200);
-        }
+        // Define square corners
+        float squareSize = 24; // 24 inch square
+        
+        driveToPose(squareSize, 0, 0);      // Move to (24, 0), face 0°
+        waitUntilDone();
+        
+        driveToPose(squareSize, squareSize, 90);  // Move to (24, 24), face 90°
+        waitUntilDone();
+        
+        driveToPose(0, squareSize, 180);    // Move to (0, 24), face 180°
+        waitUntilDone();
+        
+        driveToPose(0, 0, 270);             // Move to (0, 0), face 270°
+        waitUntilDone();
+        
+        turnToHeading(0);                   // Face original heading
+        waitUntilDone();
     }
     
     void testRoutine() {
-        // Simple test routine
-        resetPosition();
+        // Test PID precision
+        resetToStartingPose();
         
-        Drive::moveForward(50, 1000);   // 1 second forward
-        pros::delay(500);
-        Drive::moveBackward(50, 1000);  // 1 second back
-        pros::delay(500);
-        Drive::turnRight(50, 400);      // Quick right turn
-        pros::delay(500);
-        Drive::turnLeft(50, 400);       // Quick left turn back
+        // Test forward movement
+        driveDistance(12);  // 12 inches forward
+        waitUntilDone();
+        waitMS(1000);
+        
+        // Test backward movement
+        driveDistance(-12); // 12 inches backward
+        waitUntilDone();
+        waitMS(1000);
+        
+        // Test turning
+        turnToHeading(90);  // Turn to 90 degrees
+        waitUntilDone();
+        waitMS(1000);
+        
+        turnToHeading(0);   // Turn back to 0 degrees
+        waitUntilDone();
     }
     
-    // Helper functions for easy autonomous programming (simplified)
-    void driveForward(float distance, int timeout) {
-        // Simple forward movement based on time estimation
-        // Roughly 1 second = ~12 inches at medium speed
-        int time_estimate = (int)(distance * 83);  // Rough time calculation
-        Drive::moveForward(80, time_estimate);
+    // PID-based movement functions with precise positioning
+    void driveToPoint(float x, float y, int timeout, bool forwards) {
+        Chassis::moveToPoint(x, y, timeout, forwards, 127);
     }
     
-    void driveBackward(float distance, int timeout) {
-        int time_estimate = (int)(distance * 83);
-        Drive::moveBackward(80, time_estimate);
-    }
-    
-    void turnRight(float degrees, int timeout) {
-        // Rough time estimation for degrees (adjust for your robot)
-        int time_estimate = (int)(degrees * 9);  // ~9ms per degree
-        Drive::turnRight(60, time_estimate);
-    }
-    
-    void turnLeft(float degrees, int timeout) {
-        int time_estimate = (int)(degrees * 9);
-        Drive::turnLeft(60, time_estimate);
+    void driveToPose(float x, float y, float heading, int timeout, bool forwards) {
+        Chassis::moveToPose(x, y, heading, timeout, forwards, 127);
     }
     
     void turnToHeading(float heading, int timeout) {
-        // Simple turn to heading (not precise without IMU)
-        Drive::turnRight(50, 1000);  // Basic turn
+        Chassis::turnToHeading(heading, timeout, 127);
+    }
+    
+    void driveDistance(float distance, int timeout, bool forwards) {
+        lemlib::Pose currentPose = getCurrentPose();
+        
+        // Calculate target position based on current heading
+        float heading_rad = currentPose.theta * M_PI / 180.0;
+        float target_x = currentPose.x + distance * std::cos(heading_rad);
+        float target_y = currentPose.y + distance * std::sin(heading_rad);
+        
+        if (distance >= 0) {
+            driveToPoint(target_x, target_y, timeout, true);
+        } else {
+            driveToPoint(target_x, target_y, timeout, false);
+        }
+    }
+    
+    // Relative movement functions
+    void driveForward(float inches) {
+        driveDistance(inches, 4000, true);
+        waitUntilDone();
+    }
+    
+    void driveBackward(float inches) {
+        driveDistance(-inches, 4000, false);
+        waitUntilDone();
+    }
+    
+    void turnRight(float degrees) {
+        lemlib::Pose currentPose = getCurrentPose();
+        float targetHeading = currentPose.theta + degrees;
+        turnToHeading(targetHeading);
+        waitUntilDone();
+    }
+    
+    void turnLeft(float degrees) {
+        lemlib::Pose currentPose = getCurrentPose();
+        float targetHeading = currentPose.theta - degrees;
+        turnToHeading(targetHeading);
+        waitUntilDone();
+    }
+    
+    void strafeRight(float inches) {
+        // For future mecanum implementation
+        lemlib::Pose currentPose = getCurrentPose();
+        float heading_rad = (currentPose.theta + 90) * M_PI / 180.0;
+        float target_x = currentPose.x + inches * std::cos(heading_rad);
+        float target_y = currentPose.y + inches * std::sin(heading_rad);
+        driveToPoint(target_x, target_y);
+        waitUntilDone();
+    }
+    
+    void strafeLeft(float inches) {
+        strafeRight(-inches);
+    }
+    
+    // Position and pose management
+    void setStartingPose(float x, float y, float heading) {
+        startingPose = {x, y, heading};
+        Chassis::setPose(x, y, heading);
+    }
+    
+    void resetToStartingPose() {
+        Chassis::setPose(startingPose.x, startingPose.y, startingPose.theta);
     }
     
     void resetPosition() {
-        // Reset chassis position and motor encoders
-        Chassis::setPose(0, 0, 0);
+        setStartingPose(0, 0, 0);
         Drive::resetEncoders();
-        startingPose = {0, 0, 0};
     }
     
-    void returnToStart() {
-        // Simple return to start (not precise without odometry)
-        // This is a basic implementation
-        pros::delay(500);
+    lemlib::Pose getCurrentPose() {
+        return Chassis::getPose();
+    }
+    
+    // Utility functions
+    void waitUntilDone() {
+        Chassis::waitUntilDone();
+    }
+    
+    void waitUntilDistance(float distance) {
+        Chassis::waitUntil(distance);
+    }
+    
+    void waitMS(int milliseconds) {
+        pros::delay(milliseconds);
+    }
+    
+    // PID tuning functions
+    void tuneLinearPID() {
+        resetPosition();
+        
+        // Test linear PID - should move exactly 24 inches
+        driveDistance(24);
+        waitUntilDone();
+        waitMS(2000);
+        
+        // Move back to test accuracy
+        driveDistance(-24);
+        waitUntilDone();
+        
+        // Check final position - should be close to (0, 0)
+        lemlib::Pose finalPose = getCurrentPose();
+        // Display pose for tuning feedback
+    }
+    
+    void tuneAngularPID() {
+        resetPosition();
+        
+        // Test angular PID - should turn exactly 90 degrees
+        turnToHeading(90);
+        waitUntilDone();
+        waitMS(2000);
+        
+        turnToHeading(180);
+        waitUntilDone();
+        waitMS(2000);
+        
+        turnToHeading(270);
+        waitUntilDone();
+        waitMS(2000);
+        
+        turnToHeading(0);
+        waitUntilDone();
+        
+        // Check final heading - should be close to 0
+        lemlib::Pose finalPose = getCurrentPose();
+        // Display pose for tuning feedback
     }
 }

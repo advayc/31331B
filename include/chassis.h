@@ -2,6 +2,8 @@
 
 #include "lemlib/api.hpp"
 
+// Header contract: declares chassis, PID settings, and motion API; implementation includes Drive for motor externs.
+
 namespace Chassis {
     // Drivetrain and chassis instances
     extern lemlib::Drivetrain drivetrain;
@@ -36,4 +38,11 @@ namespace Chassis {
     // Pose functions
     lemlib::Pose getPose();
     void setPose(float x, float y, float theta);
+
+    // Runtime PID tuning API
+    void setLinearGains(float kP, float kI, float kD);
+    void setAngularGains(float kP, float kI, float kD);
+    void getLinearGains(float& kP, float& kI, float& kD);
+    void getAngularGains(float& kP, float& kI, float& kD);
+    void rebuild();
 }

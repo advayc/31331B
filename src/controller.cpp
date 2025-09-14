@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "pros/misc.hpp"
 
 namespace Controller {
     // Controller instance

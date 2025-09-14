@@ -1,7 +1,11 @@
-#include "drive.h"
-#include <cstdlib>  // for abs()
+#include "pros/motor_group.hpp"
+#include "pros/motors.hpp"
+#include "pros/rtos.hpp"
 
 namespace Drive {
+    // Forward declarations for functions used before they are defined
+    void setBrakeMode(pros::MotorBrake mode);
+    void resetEncoders();
     // Motor groups - matching Python VEX configuration
     // Left side: port 1 (reversed), port 2 (normal), port 3 (normal)
     pros::MotorGroup leftMotors({-1, 2, 3}, pros::MotorGearset::blue);
@@ -48,8 +52,8 @@ namespace Drive {
     }
     
     void setBrakeMode(pros::MotorBrake mode) {
-        leftMotors.set_brake_mode_all(mode);
-        rightMotors.set_brake_mode_all(mode);
+        leftMotors.set_brake_mode(mode);
+        rightMotors.set_brake_mode(mode);
     }
     
     void resetEncoders() {

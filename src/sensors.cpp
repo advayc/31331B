@@ -1,4 +1,4 @@
-#include "sensors.h"
+// No includes needed; this module currently uses no external sensors
 
 namespace Sensors {
     // No external sensors - using motor encoders only

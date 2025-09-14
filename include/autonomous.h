@@ -2,6 +2,8 @@
 
 #include "lemlib/api.hpp"
 
+// Header contract: declares autonomous routines and helpers; implementation includes chassis/drive as needed.
+
 namespace Autonomous {
     // Starting position management
     extern lemlib::Pose startingPose;

@@ -1,6 +1,9 @@
-#include "display.h"
-#include "chassis.h"
 #include "pros/llemu.hpp"
+#include "pros/rtos.hpp"
+#include <cstdarg>
+#include <cstdio>
+#include "lemlib/api.hpp"
+#include "chassis.h"
 
 namespace Display {
     pros::Task* displayTask = nullptr;

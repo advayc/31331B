@@ -1,6 +1,7 @@
 #pragma once
 
 namespace Sensors {
+    // Header contract: stub sensor interface; implementation has no dependencies.
     // Sensor functions (no external sensors - using motor encoders only)
     void initialize();
     void calibrateAll();

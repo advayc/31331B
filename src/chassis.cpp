@@ -1,8 +1,13 @@
-#include "chassis.h"
+#include "lemlib/api.hpp"
+#include "pros/rtos.hpp"
+#include "pros/motors.hpp"
+#include "pros/motor_group.hpp"
 #include "drive.h"
-#include "lemlib/chassis/trackingWheel.hpp"
+#include <new>
 
 namespace Chassis {
+    // Forward declarations for functions used before they are defined
+    void calibrate();
     // PID and chassis setup for 36:60 drivetrain, 360 RPM, motor encoder odometry
     lemlib::Drivetrain drivetrain(&Drive::leftMotors,
                                   &Drive::rightMotors,
@@ -97,5 +102,36 @@ namespace Chassis {
     
     void setPose(float x, float y, float theta) {
         chassis.setPose(x, y, theta);
+    }
+
+    // --- Runtime PID tuning implementation ---
+    void setLinearGains(float kP, float kI, float kD) {
+        linearController.kP = kP;
+        linearController.kI = kI;
+        linearController.kD = kD;
+    }
+
+    void setAngularGains(float kP, float kI, float kD) {
+        angularController.kP = kP;
+        angularController.kI = kI;
+        angularController.kD = kD;
+    }
+
+    void getLinearGains(float& kP, float& kI, float& kD) {
+        kP = linearController.kP;
+        kI = linearController.kI;
+        kD = linearController.kD;
+    }
+
+    void getAngularGains(float& kP, float& kI, float& kD) {
+        kP = angularController.kP;
+        kI = angularController.kI;
+        kD = angularController.kD;
+    }
+
+    void rebuild() {
+        // Destroy and reconstruct chassis in-place with updated settings
+        chassis.~Chassis();
+        new (&chassis) lemlib::Chassis(drivetrain, linearController, angularController, sensors, &throttleCurve, &steerCurve);
     }
 }

@@ -3,6 +3,10 @@
 #include <cstdint>
 #include "pros/misc.hpp"
 
+// Header contract:
+// - Declares controller accessors; safe to include anywhere.
+// - Implementation (.cpp) does not include this header.
+
 namespace Controller {
     // Controller instance
     extern pros::Controller master;

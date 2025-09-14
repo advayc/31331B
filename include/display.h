@@ -2,6 +2,8 @@
 
 #include "pros/screen.hpp"
 
+// Header contract: declares display helpers; implementation includes pros lcd and may include chassis.
+
 namespace Display {
     // Display functions
     void initialize();

@@ -2,6 +2,11 @@
 
 #include "pros/motor_group.hpp"
 
+// Header contract:
+// - This header declares the Drive interface and extern motor groups.
+// - It is intended to be included by users (e.g., other modules and main).
+// - The implementation file does not include this header to avoid redundant self-include.
+
 namespace Drive {
     // Motor groups
     extern pros::MotorGroup leftMotors;

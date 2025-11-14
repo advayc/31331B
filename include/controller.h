@@ -20,6 +20,11 @@ namespace Controller {
     int getLeftX();
     int getRightY();
     
+    // Aliases for Python VEX style
+    int getForward();  // Left Y (axis 3)
+    int getTurn();     // Left X (axis 4)
+    int getConveyor(); // Right Y (axis 2)
+    
     // Button checking
     bool getDigital(pros::controller_digital_e_t button);
     bool getDigitalNewPress(pros::controller_digital_e_t button);

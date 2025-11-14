@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "pid",
+    "project_name": "c++",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -298,7 +298,7 @@
       }
     },
     "upload_options": {
-      "icon": "pros",
+      "icon": "pizza",
       "description": "MAIN CODE CPP PROS",
       "slot": 3
     },

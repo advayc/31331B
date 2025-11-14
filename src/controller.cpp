@@ -24,6 +24,19 @@ namespace Controller {
         return master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
     }
     
+    // Aliases for Python VEX style
+    int getForward() {
+        return getLeftY();  // Axis 3
+    }
+    
+    int getTurn() {
+        return getLeftX();  // Axis 4
+    }
+    
+    int getConveyor() {
+        return getRightY();  // Axis 2
+    }
+    
     bool getDigital(pros::controller_digital_e_t button) {
         return master.get_digital(button);
     }

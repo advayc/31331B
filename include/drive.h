@@ -20,7 +20,7 @@ namespace Drive {
     // Drive functions
     void initialize();
     void setDriveSpeeds(int left_speed, int right_speed);
-    void setConveyorSpeeds(int speed1, int speed2);
+    void setConveyorSpeed(int speed);
     
     // Motor control utilities
     void resetEncoders();

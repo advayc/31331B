@@ -44,23 +44,18 @@ void opcontrol() {
     Drive::initialize();
     
     while (true) {
-        // D-pad for arcade drive
-        int forward = 0;
-        int turn = 0;
-        if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_UP)) forward = 127;
-        if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_DOWN)) forward = -127;
-        if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_LEFT)) turn = -127;
-        if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_RIGHT)) turn = 127;
+        // Left joystick for arcade drive
+        int forward = Controller::getLeftY();  // Left stick Y for forward/backward
+        int turn = Controller::getLeftX();     // Left stick X for turning
         
-        // Left joystick Y for conveyor motor 7, right joystick Y for conveyor motor 8
-        int conveyor_7 = Controller::getLeftY();
-        int conveyor_8 = Controller::getRightY();
+        // Right joystick for conveyor
+        int conveyor = Controller::getRightY(); // Right stick Y for conveyor control
         
         int left_speed = forward + turn;
         int right_speed = forward - turn;
         
         Drive::setDriveSpeeds(left_speed, right_speed);
-        Drive::setConveyorSpeeds(conveyor_7, conveyor_8);
+        Drive::setConveyorSpeed(conveyor);
         
         pros::delay(10);
     }

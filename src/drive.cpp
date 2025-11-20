@@ -30,10 +30,10 @@ namespace Drive {
         rightMotors.move(-right_speed);
     }
     
-    void setConveyorSpeeds(int speed1, int speed2) {
-        // Conveyor motors controlled separately
-        conveyor_motor_1.move(speed1);  // Motor 7 (not reversed)
-        conveyor_motor_2.move(speed2); // Motor 8 (reversed, so move(speed2) = REVERSE direction)
+    void setConveyorSpeed(int speed) {
+        // Conveyor motors: motor 1 forward, motor 2 reverse (due to reversed motor on port 8)
+        conveyor_motor_1.move(speed);  // Port 7, not reversed
+        conveyor_motor_2.move(speed);  // Port 8, reversed motor spins opposite direction
     }
     
     void resetEncoders() {

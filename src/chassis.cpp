@@ -11,7 +11,7 @@ namespace Chassis {
     // PID and chassis setup for 36:60 drivetrain, 360 RPM, motor encoder odometry
     lemlib::Drivetrain drivetrain(&Drive::leftMotors,
                                   &Drive::rightMotors,
-                                  10.5, // track width in inches (adjust based on your robot)
+                                  11.25, // track width in inches (30 holes = 11.25 inches)
                                   lemlib::Omniwheel::NEW_325, // 3.25" wheels
                                   360, // drivetrain rpm (matches your specs)
                                   2 // horizontal drift (lower for better accuracy with encoders)
@@ -79,9 +79,9 @@ namespace Chassis {
         chassis.turnToPoint(x, y, timeout, {.maxSpeed = (int)maxSpeed});
     }
     
-    void follow(const char* path, float lookahead, int timeout, bool forwards) {
-        // Path following will be implemented when assets are set up
-        // chassis.follow(path, lookahead, timeout, forwards);
+    void follow(asset& path, float lookahead, int timeout, bool forwards) {
+        // Follow the path using LemLib's path following
+        chassis.follow(path, lookahead, timeout, forwards);
     }
     
     void waitUntilDone() {

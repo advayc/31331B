@@ -34,7 +34,8 @@ void competition_initialize() {}
  */
 void autonomous() {
     // Run the main autonomous routine
-    Autonomous::basicRoutine();
+   // Autonomous::basicRoutine(); 
+    Autonomous::pidTest(); // for testing PID
 }
 
 /**

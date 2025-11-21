@@ -28,7 +28,7 @@ namespace Chassis {
     void turnToPoint(float x, float y, int timeout, float maxSpeed = 127);
     
     // Path following
-    void follow(const char* path, float lookahead, int timeout, bool forwards = true);
+    void follow(asset& path, float lookahead, int timeout, bool forwards = true);
     
     // Utility functions
     void waitUntilDone();

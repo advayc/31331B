@@ -83,6 +83,16 @@ void opcontrol(void);
  * You can add C++-only headers here
  */
 //#include <iostream>
+#include "lemlib/asset.hpp"
+#include "autonomous.h"
+#include "chassis.h"
+#include "controller.h"
+#include "display.h"
+#include "drive.h"
+#include "sensors.h"
+
+// Path asset declaration
+ASSET(path_jerryio_txt);
 #endif
 
 #endif  // _PROS_MAIN_H_

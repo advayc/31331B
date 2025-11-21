@@ -1,6 +1,7 @@
 #include "lemlib/api.hpp"
 #include "pros/rtos.hpp"
 #include <cmath>
+#include "main.h"
 #include "chassis.h"
 #include "drive.h"
 #include "autonomous.h"
@@ -18,26 +19,12 @@ namespace Autonomous {
         // Reset to starting position
         resetToStartingPose();
         
-        // PID-based autonomous routine using precise positioning
-        // Move to position (36, 0) - 36 inches forward
-        driveToPoint(36, 0);
-        waitUntilDone();
-        
-        // Turn to face 90 degrees (right)
-        turnToHeading(90);
-        waitUntilDone();
-        
-        // Move forward 12 inches in the new direction
-        driveDistance(12);
-        waitUntilDone();
-        
-        // Move back 12 inches
-        driveDistance(-12);
-        waitUntilDone();
-        
-        // Return to starting pose (position and heading)
-        resetToStartingPose();
-        waitUntilDone();
+        // Follow the path from path.jerryio.txt
+        // Lookahead: 15 inches (adjust based on testing)
+        // Timeout: 15000ms (15 seconds)
+        // Forwards: true (robot follows path going forward)
+        Chassis::follow(path_jerryio_txt, 15, 15000, true);
+        Chassis::waitUntilDone();
     }
     
     void skillsRoutine() {
@@ -225,5 +212,106 @@ namespace Autonomous {
         // Check final heading - should be close to 0
         lemlib::Pose finalPose = getCurrentPose();
         // Display pose for tuning feedback
+    }
+    
+    void pidTest() {
+        // Comprehensive PID testing routine for path following accuracy
+        // Tests linear movement, angular movement, and combined motions
+        
+        Controller::rumble("-");
+        pros::delay(500);
+        
+        // Test 1: Linear Movement Test (24 inches forward and back)
+        Controller::setText(0, 0, "Test 1: Linear");
+        resetPosition();
+        
+        // Forward 24 inches
+        driveDistance(24, 3000, true);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        // Backward 24 inches
+        driveDistance(-24, 3000, true);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        Controller::rumble(".");
+        pros::delay(2000);
+        
+        // Test 2: Angular Movement Test (90 degree turns)
+        Controller::setText(0, 0, "Test 2: Turns");
+        resetPosition();
+        
+        // Turn right 90 degrees
+        turnToHeading(90, 2000);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        // Turn back to 0 degrees
+        turnToHeading(0, 2000);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        // Turn left 90 degrees
+        turnToHeading(-90, 2000);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        // Turn back to 0 degrees
+        turnToHeading(0, 2000);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        Controller::rumble("..");
+        pros::delay(2000);
+        
+        // Test 3: Extended Linear Test (20 inches)
+        Controller::setText(0, 0, "Test 3: 20in");
+        resetPosition();
+        
+        // Forward 20 inches
+        driveDistance(20, 3000, true);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        // Backward 20 inches
+        driveDistance(-20, 3000, true);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        Controller::rumble("...");
+        pros::delay(2000);
+        
+        // Test 4: Full Rotation Test (Angular PID)
+        Controller::setText(0, 0, "Test 4: 360");
+        resetPosition();
+        
+        // Turn 90 degrees increments for full rotation
+        turnToHeading(90, 2000);
+        waitUntilDone();
+        pros::delay(500);
+        
+        turnToHeading(180, 2000);
+        waitUntilDone();
+        pros::delay(500);
+        
+        turnToHeading(270, 2000);
+        waitUntilDone();
+        pros::delay(500);
+        
+        turnToHeading(0, 2000);
+        waitUntilDone();
+        pros::delay(1000);
+        
+        Controller::rumble("----");
+        Controller::setText(0, 0, "Tests Done!");
+        
+        // Display final position error
+        lemlib::Pose finalPose = getCurrentPose();
+        char buf[32];
+        snprintf(buf, sizeof(buf), "X:%.1f Y:%.1f", finalPose.x, finalPose.y);
+        Controller::setText(1, 0, buf);
+        snprintf(buf, sizeof(buf), "H:%.1f", finalPose.theta);
+        Controller::setText(2, 0, buf);
     }
 }

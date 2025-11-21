@@ -44,4 +44,5 @@ namespace Autonomous {
     // PID tuning functions
     void tuneLinearPID();
     void tuneAngularPID();
+    void pidTest();
 }

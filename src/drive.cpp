@@ -1,5 +1,6 @@
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
+#include "pros/adi.hpp"
 #include "pros/rtos.hpp"
 
 namespace Drive {
@@ -12,6 +13,9 @@ namespace Drive {
     // Conveyor motors
     pros::Motor conveyor_motor_1(7, pros::v5::MotorGears::blue);
     pros::Motor conveyor_motor_2(8, pros::v5::MotorGears::green);
+    
+    // Matchload piston on ADI port A
+    pros::adi::DigitalOut matchload_piston('A');
     
     void initialize() {
         // Set brake mode for better control
@@ -39,5 +43,9 @@ namespace Drive {
     void resetEncoders() {
         leftMotors.tare_position();
         rightMotors.tare_position();
+    }
+    
+    void setMatchloadPiston(bool extended) {
+        matchload_piston.set_value(extended);
     }
 }

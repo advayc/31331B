@@ -16,6 +16,8 @@ namespace Autonomous {
     void skillsRoutine();
     void testRoutine();
     void skills15p();
+    void leftMatch();
+    void rightMatch();
     
     // PID-based movement functions with precise positioning
     void driveToPoint(float x, float y, int timeout = 4000, bool forwards = true);

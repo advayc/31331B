@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "c--",
+    "project_name": "15p skills",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -298,9 +298,9 @@
       }
     },
     "upload_options": {
-      "icon": "pizza",
+      "icon": "power",
       "description": "MAIN CODE CPP PROS",
-      "slot": 1
+      "slot": 8
     },
     "use_early_access": false
   }

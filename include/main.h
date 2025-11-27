@@ -92,7 +92,8 @@ void opcontrol(void);
 #include "sensors.h"
 
 // Path asset declaration
-ASSET(path_jerryio_txt);
+ASSET(right_match_txt);
+ASSET(left_match_txt);
 #endif
 
 #endif  // _PROS_MAIN_H_

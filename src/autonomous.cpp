@@ -19,34 +19,32 @@ namespace Autonomous {
         // Reset to starting position
         resetToStartingPose();
         
-        // Follow the path from path.jerryio.txt
+        // Follow the right path
         // Lookahead: 15 inches (adjust based on testing)
         // Timeout: 15000ms (15 seconds)
         // Forwards: true (robot follows path going forward)
-        Chassis::follow(path_jerryio_txt, 15, 15000, true);
+        Chassis::follow(right_match_txt, 15, 15000, true);
+        Chassis::waitUntilDone();
+    }
+
+    // Separate match routines using static assets
+    void leftMatch() {
+        resetToStartingPose();
+        // Follow the left-side match path
+        Chassis::follow(left_match_txt, 15, 15000, true);
+        Chassis::waitUntilDone();
+    }
+
+    void rightMatch() {
+        resetToStartingPose();
+        // Follow the right-side match path
+        Chassis::follow(right_match_txt, 15, 15000, true);
         Chassis::waitUntilDone();
     }
     
-    void skillsRoutine() {
-        // Square pattern using precise PID positioning
-        resetToStartingPose();
-        
-        // Define square corners
-        float squareSize = 24; // 24 inch square
-        
-        driveToPose(squareSize, 0, 0);      // Move to (24, 0), face 0°
-        waitUntilDone();
-        
-        driveToPose(squareSize, squareSize, 90);  // Move to (24, 24), face 90°
-        waitUntilDone();
-        
-        driveToPose(0, squareSize, 180);    // Move to (0, 24), face 180°
-        waitUntilDone();
-        
-        driveToPose(0, 0, 270);             // Move to (0, 0), face 270°
-        waitUntilDone();
-        
-        turnToHeading(0);                   // Face original heading
+    void AWP() {
+        // move forward two inches
+        driveDistance(2.0);
         waitUntilDone();
     }
     

@@ -34,8 +34,10 @@ void competition_initialize() {}
  */
 void autonomous() {
     // Run the main autonomous routine
-   // Autonomous::basicRoutine(); 
-    Autonomous::pidTest(); // for testing PID
+    //Autonomous::basicRoutine(); // pathjerry path
+    // Autonomous::skillsRoutine(); // PID square routine
+    // Autonomous::testRoutine(); // PID test routine
+    Autonomous::skills15p(); // 15 point skills routine
 }
 
 /**

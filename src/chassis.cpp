@@ -11,7 +11,7 @@ namespace Chassis {
     // PID and chassis setup for 36:60 drivetrain, 360 RPM, motor encoder odometry
     lemlib::Drivetrain drivetrain(&Drive::leftMotors,
                                   &Drive::rightMotors,
-                                  11.25, // track width in inches (30 holes = 11.25 inches)
+                                  15.0, // track width in inches (15" x 15" robot)
                                   lemlib::Omniwheel::NEW_325, // 3.25" wheels
                                   360, // drivetrain rpm (matches your specs)
                                   2 // horizontal drift (lower for better accuracy with encoders)

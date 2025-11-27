@@ -72,6 +72,13 @@ namespace Autonomous {
         turnToHeading(0);   // Turn back to 0 degrees
         waitUntilDone();
     }
+
+    void skills15p () {
+        waitMS(1000);
+        Drive::conveyor_motor_2.move(127);
+        waitMS(10000);
+        Drive::conveyor_motor_2.move(0);
+    }
     
     // PID-based movement functions with precise positioning
     void driveToPoint(float x, float y, int timeout, bool forwards) {

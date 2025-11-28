@@ -72,9 +72,9 @@ namespace Autonomous {
     }
 
     void skills15p () {
-        waitMS(1000);
-        Drive::conveyor_motor_2.move(127);
-        waitMS(10000);
+        pros::delay(1000);
+        Drive::conveyor_motor_2.move(50);
+        pros::delay(5000);
         Drive::conveyor_motor_2.move(0);
     }
     

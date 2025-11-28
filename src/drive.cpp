@@ -6,13 +6,13 @@
 namespace Drive {
     // Motor groups - matching Python VEX configuration
     // Left side: port 1 (reversed), port 2 (normal), port 3 (normal)
-    pros::MotorGroup leftMotors({-1, 2, 3}, pros::MotorGearset::blue);
+    pros::MotorGroup leftMotors({19, -18, -20}, pros::MotorGearset::blue);
     // Right side: port 4 (normal), port 5 (reversed), port 6 (reversed)  
-    pros::MotorGroup rightMotors({4, -5, -6}, pros::MotorGearset::blue);
+    pros::MotorGroup rightMotors({-8, 9, 10}, pros::MotorGearset::blue);
     
     // Conveyor motors
-    pros::Motor conveyor_motor_1(7, pros::v5::MotorGears::blue);
-    pros::Motor conveyor_motor_2(8, pros::v5::MotorGears::green);
+    pros::Motor conveyor_motor_1(11, pros::v5::MotorGears::blue);
+    pros::Motor conveyor_motor_2(12, pros::v5::MotorGears::green);
     
     // Matchload piston on ADI port A
     pros::adi::DigitalOut matchload_piston('A');

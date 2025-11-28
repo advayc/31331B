@@ -29,6 +29,7 @@ void disabled() {}
  */
 void competition_initialize() {}
 
+
 /**
  * Runs during autonomous period
  */
@@ -38,9 +39,9 @@ void autonomous() {
 
     // Autonomous::testRoutine(); // PID test routine
 
-    Autonomous::skills15p(); // 15 point skills routine
+    //Autonomous::skills15p(); // 15 point skills routine
 
-    //Autonomous::AWP(); // move forward one inch
+    Autonomous::AWP(); // move forward one inch
 
     // Autonomous::rightMatch(); // jerry right routine
     // Autonomous::leftMatch(); // jerry left routine
@@ -61,8 +62,8 @@ void opcontrol() {
         // Right joystick for conveyor
         int conveyor = Controller::getRightY(); // Right stick Y for conveyor control
         
-        int left_speed = forward + turn;
-        int right_speed = forward - turn;
+        int left_speed = forward - turn;
+        int right_speed = forward + turn;
         
         Drive::setDriveSpeeds(left_speed, right_speed);
         Drive::setConveyorSpeed(conveyor);

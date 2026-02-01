@@ -59,20 +59,31 @@ void opcontrol() {
         int forward = Controller::getLeftY();  // Left stick Y for forward/backward
         int turn = Controller::getLeftX();     // Left stick X for turning
         
-        // Right joystick for conveyor
-        int conveyor = Controller::getRightY(); // Right stick Y for conveyor control
-        
+        // Right joystick controls intake (motor on port 11)
+        int intake = Controller::getRightY(); // Right stick Y for intake control
+
+        // D-pad up/down control the second conveyor (motor on port 12)
+        int conveyor2_speed = 0;
+        if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_UP)) {
+            conveyor2_speed = 127;
+        } else if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            conveyor2_speed = -127;
+        }
+
         int left_speed = forward - turn;
         int right_speed = forward + turn;
-        
+
         Drive::setDriveSpeeds(left_speed, right_speed);
-        Drive::setConveyorSpeed(conveyor);
+        // Motor on port 11 -> intake joystick
+        Drive::conveyor_motor_1.move(intake);
+        // Motor on port 12 -> up/down arrows
+        Drive::conveyor_motor_2.move(conveyor2_speed);
         
-        // Matchload piston controls (up on R1/R2, down on L1/L2)
+        // Matchload piston controls (down on R1/R2, up on L1/L2)
         if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_R1) || Controller::getDigital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            Drive::setMatchloadPiston(true);  // Up
+            Drive::setMatchloadPiston(false);  // Down
         } else if (Controller::getDigital(pros::E_CONTROLLER_DIGITAL_L1) || Controller::getDigital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            Drive::setMatchloadPiston(false); // Down
+            Drive::setMatchloadPiston(true); // Up
         }
         
         pros::delay(10);

@@ -43,9 +43,10 @@ namespace Autonomous {
     }
     
     void AWP() {
-        // move forward two inches
-        driveDistance(2.0);
-        waitUntilDone();
+        // move forward a little bit using direct drivetrain control
+        Drive::setDriveSpeeds(50, 50);
+        pros::delay(500);
+        Drive::setDriveSpeeds(0, 0);
     }
     
     void testRoutine() {
